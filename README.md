@@ -1,5 +1,5 @@
 # web.php
-~~~php
+
 Route::get('/customers', 'CustomerController@index');
 Route::get('/customers/create', 'CustomerController@create');
 Route::post('/customers', 'CustomerController@store');
@@ -9,6 +9,7 @@ Route::patch('/customers/{customer}', 'CustomerController@update');
 Route::delete('/customers/{customer}', 'CustomerController@destroy');
 
 # CustomerController.php
+
 <?php
 
 namespace App\Http\Controllers;
