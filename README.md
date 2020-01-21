@@ -77,16 +77,84 @@ class CustomerController extends Controller
     }
 }
 ~~~
+# customer/index.blade.php
 ~~~php
+<h1>Customers</h1>
+
+<a href="/customers/create">Add New Customer</a>
+@forelse($customers as $customer)
+    <p><strong>
+            <a href="/customers/{{ $customer->id }}">{{ $customer->name }}</a>
+        </strong> ({{ $customer->email }})</p>
+@empty
+    <p>No customers to show.</p>
+@endforelse
+~~~
+# customer/show.blade.php
+~~~php
+<h1>Customer Details</h1>
+
+<a href="/customers">< Back</a><br />
+
+<div><strong>Name:</strong> {{ $customer->name }}</div>
+<div><strong>Email:</strong> {{ $customer->email }}</div>
+
+<div>
+    <a href="/customers/{{ $customer->id }}/edit">Edit</a>
+
+    <form action="/customers/{{ $customer->id }}" method="post">
+        @method('DELETE')
+        @csrf
+
+        <button>Delete</button>
+    </form>
+
+</div>
 
 ~~~
+# customer/create.blade.php
 ~~~php
+<h1>Add New Customer</h1>
 
+<form action="/customers" method="post">
+
+    @include('customer.form')
+
+    <button>Add New Customer</button>
+
+</form>
 ~~~
+# customer/edit.blade.php
 ~~~php
+<h1>Edit Customer Details</h1>
 
+<form action="/customers/{{ $customer->id }}" method="post">
+
+    @method('PATCH')
+
+    @include('customer.form')
+
+    <button>Update Customer</button>
+
+</form>
 ~~~
+# customer/form.blade.php
 ~~~php
+<div>
+    <label for="name">Name</label>
+    <input type="text" name="name" value="{{ old('name') ?? $customer->name }}" autocomplete="off">
+    @error('name')
+    <p style="color: red;">{{ $message }}</p>
+    @enderror
+</div>
+<div>
+    <label for="email">Email</label>
+    <input type="text" name="email" value="{{ old('email') ?? $customer->email }}" autocomplete="off">
+    @error('email')
+    <p style="color: red;">{{ $message }}</p>
+    @enderror
+</div>
 
+@csrf
 ~~~
 
